@@ -1,7 +1,6 @@
 import re
 
 from psycopg2.errorcodes import UNIQUE_VIOLATION
-from sqlalchemy import or_
 from sqlalchemy.exc import IntegrityError
 from werkzeug.exceptions import BadRequest
 
