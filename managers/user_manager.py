@@ -16,7 +16,7 @@ class UserManager(BaseManager):
     @classmethod
     @handle_unique_constrain_violation
     def register(cls, data):
-        user = UserModel(**data)
+        user = cls.get_model()(**data)
         db.session.add(user)
         db.session.flush()
         return AuthManager.encode_token(user)
