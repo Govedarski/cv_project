@@ -1,0 +1,26 @@
+from marshmallow import fields, Schema, validate, post_load
+from werkzeug.security import generate_password_hash
+
+from schemas.validators.password_validator import PasswordValidator
+
+
+class RegisterSchemaIn(Schema):
+    email = fields.Email(required=True)
+
+    username = fields.Str(validate=validate.And(
+        validate.Length(min=3, max=64),
+    ))
+
+    password = fields.Str(required=True,
+                          validate=PasswordValidator().validate_password)
+
+    @post_load
+    def hash_password(self, data, *args, **kwargs):
+        data["password"] = generate_password_hash(data["password"])
+        return data
+
+
+class LoginSchemaIn(Schema):
+    identifier = fields.Str(required=True)
+
+    password = fields.Str(required=True)
