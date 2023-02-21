@@ -1,0 +1,2 @@
+IDENTIFIER = 'identifier'
+PASSWORD = 'password'

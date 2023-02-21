@@ -1,7 +1,9 @@
-from abc import ABC, abstractmethod
+import random
+from time import sleep
 
-from flask import request
+from flask import request, current_app
 from flask_restful import Resource
+
 from managers.base_manager import BaseManager
 
 
@@ -24,7 +26,6 @@ class BaseResource(Resource):
 
     def get_manager(self, *args, **kwargs):
         return self.MANAGER
-
 
 # class CreateResourceMixin(ABC, BaseResource):
 #     """Minimum required class attributes: SCHEMA_OUT"""

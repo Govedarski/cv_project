@@ -29,7 +29,7 @@ class AuthManager:
             raise Unauthorized(cls.MISSING_TOKEN_MESSAGE)
         try:
             payload = jwt.decode(token, key=config("JWT_SECRET"), algorithms=["HS256"])
-            return {"id": payload["sub"], "role": payload["role"]}
+            return {"id": payload["sub"]}
 
         except ExpiredSignatureError:
             raise Unauthorized(cls.TOKEN_EXPIRED_MESSAGE)

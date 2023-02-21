@@ -1,6 +1,7 @@
 from werkzeug.exceptions import BadRequest
 from werkzeug.security import check_password_hash
 
+from constants.strings import IDENTIFIER, PASSWORD
 from db import db
 from managers.auth_manager import AuthManager
 from managers.base_manager import BaseManager
@@ -28,13 +29,13 @@ class UserManager(BaseManager):
 
     @classmethod
     def _login(cls, data):
-        user = UserModel.query.filter_by(email=data["identifier"]).first() \
-               or UserModel.query.filter_by(username=data["identifier"]).first()
+        user = UserModel.query.filter_by(email=data[IDENTIFIER]).first() \
+               or UserModel.query.filter_by(username=data[IDENTIFIER]).first()
 
         if user and user.password[0] == "!":
             raise BadRequest(cls.DEACTIVATED_USER)
 
-        if user and check_password_hash(user.password, data["password"]):
+        if user and check_password_hash(user.password, data[PASSWORD]):
             return user
 
         raise BadRequest(cls.CREDENTIALS_ERROR_MESSAGE)
