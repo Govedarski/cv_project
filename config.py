@@ -14,7 +14,7 @@ class ProductionConfiguration:
     TESTING = False
     SQLALCHEMY_DATABASE_URI = (
         f"postgresql://{config('DB_USER')}:{config('DB_PASSWORD')}"
-        f"@localhost:{config('DB_PORT')}/{config('DB_NAME')}"
+        f"@{config('DB_URL')}:{config('DB_PORT')}/{config('DB_NAME')}"
     )
 
 
@@ -24,7 +24,7 @@ class DevelopmentConfiguration:
     TESTING = False
     SQLALCHEMY_DATABASE_URI = (
         f"postgresql://{config('DB_USER')}:{config('DB_PASSWORD')}"
-        f"@localhost:{config('DB_PORT')}/{config('DB_NAME')}"
+        f"@{config('DB_URL')}:{config('DB_PORT')}/{config('DB_NAME')}"
     )
 
 
@@ -34,7 +34,7 @@ class TestingConfiguration:
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = (
         f"postgresql://{config('DB_USER')}:{config('DB_PASSWORD')}"
-        f"@localhost:{config('DB_PORT')}/{config('TEST_DB_NAME')}")
+        f"@{config('DB_URL')}:{config('DB_PORT')}/{config('TEST_DB_NAME')}")
 
 
 def create_app(configuration=None):
