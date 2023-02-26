@@ -28,4 +28,4 @@ class LoginUserResource(BaseResource):
         data = self.get_data()
         token, user = self.get_manager().login_user(data)
         user = self.serialize_obj(user)
-        return {"token": token, "user": user}, 201
+        return {"token": token, "user": user}, 200
