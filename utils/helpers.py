@@ -1,11 +1,10 @@
 import base64
 import uuid
-import random
-from time import sleep
+
 
 from werkzeug.exceptions import BadRequest, NotFound
 
-from constants.messages import PAGE_NOT_FOUND
+from constants.strings import PAGE_NOT_FOUND
 
 
 def get_or_404(model, pk, message=None):

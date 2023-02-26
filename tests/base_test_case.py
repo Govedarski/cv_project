@@ -2,7 +2,8 @@ from flask_testing import TestCase
 
 from config import create_app
 from db import db
-from tests.constants.configuration import TEST_CONFIGURATION
+from managers.auth_manager import AuthManager
+from tests.test_helpers.constants.configuration import TEST_CONFIGURATION
 
 
 class BaseTestCase(TestCase):
@@ -25,3 +26,16 @@ class BaseTestCase(TestCase):
     def tearDown(self):
         db.session.remove()
         db.drop_all()
+
+    @staticmethod
+    def _assert_count_equal(count, model):
+        assert len(model.query.all()) == count
+
+    # @staticmethod
+    # def _generate_token(user):
+    #     token = AuthManager.encode_token(user)
+    #     return token
+
+    @staticmethod
+    def _decode_token(token):
+        return AuthManager.decode_token(token)

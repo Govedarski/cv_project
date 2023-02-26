@@ -60,5 +60,5 @@ auth = Auth()
 
 @auth.verify_token
 def verify(token):
-    user_id, user_role = AuthManager.decode_token(token).values()
+    user_id = AuthManager.decode_token(token)["id"]
     return UserModel.query.filter_by(id=user_id).first()

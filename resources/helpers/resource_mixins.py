@@ -1,53 +1,30 @@
-import random
-from time import sleep
+from abc import abstractmethod, ABC
 
-from flask import request, current_app
-from flask_restful import Resource
-
-from managers.base_manager import BaseManager
+from managers.auth_manager import auth
+from resources.helpers.base_resource import BaseResource
 
 
-class BaseResource(Resource):
-    # Extended Resource class
-    MANAGER = BaseManager
-    SCHEMA_IN = None
-    SCHEMA_OUT = None
+class CreateResourceMixin(ABC, BaseResource):
+    """Minimum required class attributes: MANAGER, SCHEMA_IN and SCHEMA_OUT"""
 
-    def get_data(self, *args, **kwargs):
-        schema = self.get_schema_in(*args, **kwargs)
-        data = request.get_json() if request.data else None
-        return schema(many=isinstance(data, list)).load(data) if data else None
+    @abstractmethod
+    def post(self, **kwargs):
+        current_user = self.get_user()
+        data = self.get_data()
+        instances = self.get_manager()().create(
+            data,
+            current_user,
+            **kwargs)
+        return self.get_schema_out(instance=instances)(many=isinstance(instances, list)).dump(instances), 201
 
-    def get_schema_in(self, *args, **kwargs):
-        return self.SCHEMA_IN
 
-    def get_schema_out(self, *args, **kwargs):
-        return self.SCHEMA_OUT
+class GetResourceMixin(ABC, BaseResource):
+    """Minimum required class attributes: SCHEMA_OUT"""
 
-    def get_manager(self, *args, **kwargs):
-        return self.MANAGER
-
-# class CreateResourceMixin(ABC, BaseResource):
-#     """Minimum required class attributes: SCHEMA_OUT"""
-#
-#     @abstractmethod
-#     def post(self, **kwargs):
-#         data = self.get_data()
-#         current_user = auth.current_user()
-#         instances = self.get_manager()().create(
-#             data,
-#             current_user,
-#             **kwargs)
-#         return self.get_schema_out(instance=instances)(many=isinstance(instances, list)).dump(instances), 201
-#
-#
-# class GetResourceMixin(ABC, BaseResource):
-#     """Minimum required class attributes: SCHEMA_OUT"""
-#
-#     @abstractmethod
-#     def get(self, pk, **kwargs):
-#         instance = self.get_manager()().get(pk, **kwargs)
-#         return self.get_schema_out(instance=instance)().dump(instance), 200
+    @abstractmethod
+    def get(self, pk, **kwargs):
+        instance = self.get_manager()().get(pk, **kwargs)
+        return self.get_schema_out(instance=instance)().dump(instance), 200
 #
 #
 # class GetListResourceMixin(ABC, BaseResource):

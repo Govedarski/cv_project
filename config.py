@@ -5,7 +5,7 @@ from flask_migrate import Migrate
 from flask_restful import Api
 
 from db import db
-from resources.routes import routes
+from resources.routes import Routes
 
 
 class ProductionConfiguration:
@@ -53,7 +53,7 @@ def create_app(configuration=None):
     Migrate(app, db)
     db.init_app(app)
 
-    CORS(app)
+    # CORS(app)
 
-    [api.add_resource(*route) for route in routes]
+    [api.add_resource(*route.values()) for route in Routes.values()]
     return app

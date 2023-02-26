@@ -1,6 +1,7 @@
 from marshmallow import fields, Schema, validate, post_load
 from werkzeug.security import generate_password_hash
 
+from schemas.validators.common_validators import ValidateIsAlphaNumericAndSpace
 from schemas.validators.password_validator import PasswordValidator
 
 
@@ -9,6 +10,7 @@ class RegisterSchemaIn(Schema):
 
     username = fields.Str(validate=validate.And(
         validate.Length(min=3, max=64),
+        ValidateIsAlphaNumericAndSpace().validate
     ))
 
     password = fields.Str(required=True,

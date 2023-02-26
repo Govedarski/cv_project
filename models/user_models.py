@@ -1,21 +1,25 @@
-from sqlalchemy import func
 from sqlalchemy.orm import Query
+
 from db import db
+from models.base_model import BaseModel
 
-class BaseUserModel(db.Model):
+
+class BaseUserModel(BaseModel):
     __abstract__ = True
-
-    id = db.Column(db.Integer, primary_key=True)
 
     email = db.Column(db.String(255), unique=True, nullable=False)
     username = db.Column(db.String(255), unique=True)
     password = db.Column(db.String(255), nullable=False)
 
-    created_on = db.Column(db.DateTime, server_default=func.now(), nullable=False)
-    last_changed = db.Column(db.DateTime, onupdate=func.now())
 
 class UserModel(BaseUserModel):
     __tablename__ = 'user'
     query: Query
 
+    profile = db.relationship("ProfileModel",
+                              backref='user',
+                              uselist=False)
+
+    #Todo: to add roles
+    is_admin = db.Column(db.Boolean, default=False)
 

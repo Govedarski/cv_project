@@ -24,7 +24,10 @@ def handle_unique_constrain_violation(func):
                 error_column_index = unique_columns.index(error_column)
                 columns_to_check = unique_columns[error_column_index + 1:]
                 for column in columns_to_check:
-                    criteria = {column: data[column]}
+                    column_value = data.get(column)
+                    if not column_value:
+                        continue
+                    criteria = {column: column_value}
                     if model.query.filter_by(**criteria).first():
                         errors[column] = ERROR_MESSAGE
                 raise BadRequest(errors)
@@ -32,3 +35,4 @@ def handle_unique_constrain_violation(func):
         return result
 
     return wrapper
+

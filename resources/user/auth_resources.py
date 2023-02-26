@@ -1,5 +1,5 @@
 from managers.user_manager import UserManager
-from resources.helpers.resources_mixins import BaseResource
+from resources.helpers.resource_mixins import BaseResource
 from schemas.request.users.authentication_schemas_in import RegisterSchemaIn, LoginSchemaIn
 
 

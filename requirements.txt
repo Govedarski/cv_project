@@ -17,6 +17,7 @@ Jinja2==3.1.2
 Mako==1.2.4
 MarkupSafe==2.1.1
 marshmallow==3.19.0
+marshmallow-enum==1.5.1
 packaging==22.0
 password-strength==0.0.3.post2
 psycopg2-binary==2.9.5

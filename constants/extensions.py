@@ -1,2 +1,5 @@
-VALID_PHOTO_EXTENSIONS = ["jpg", "jpeg", "png"]
-VALID_DOCUMENT_EXTENSIONS = ["jpg", "jpeg", "png", "pdf"]
+from utils.CustomEnum import StaticCustomEnum
+
+
+class ValidExtension(StaticCustomEnum):
+    image = ["jpg", "jpeg", "png"]

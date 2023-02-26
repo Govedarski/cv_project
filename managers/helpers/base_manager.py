@@ -1,73 +1,93 @@
-import os
+from werkzeug.exceptions import BadRequest
 
-from sqlalchemy.exc import InvalidRequestError
-from werkzeug.exceptions import NotFound, Forbidden
-
-from constants.image_suffix import IMAGE_SUFFIX_IN_DB, IMAGE_SUFFIX_IN_SCHEMA, EXTENSION_SUFFIX_IN_SCHEMA
-from constants.roots import TEMP_DIR
 from db import db
 
 # from services.s3_aws_service import s3
 from utils import helpers
-# from utils.decorators import handle_unique_constrain_violation
-from utils.helpers import save_file, create_photo, has_photo, get_photo_name_by_url
+from managers.helpers.decorators import handle_unique_constrain_violation
 
+
+# from utils.decorators import handle_unique_constrain_violation
 
 class BaseManager:
     MODEL = None
-    UNIQUE = False
     UNIQUE_CONSTRAINT_MESSAGE = "Unique constraint: Object already exist!"
     PERMISSION_DENIED_MESSAGE = "Permission denied!"
     _INSTANCE = None
 
+    @classmethod
+    def get_model(cls):
+        return cls.MODEL
+
+    def _get_instance(self, pk):
+        if not self._INSTANCE:
+            self._INSTANCE = helpers.get_or_404(self.get_model(), pk)
+        return self._INSTANCE
+
+    @staticmethod
+    def create_obj(model, data, add_to_db=True):
+        instance = model(**data)
+        if add_to_db:
+            db.session.add(instance)
+            db.session.flush()
+        return instance
+
+    @classmethod
+    def need_image_handler(cls):
+        return hasattr(cls.get_model(), "get_all_image_field_names")
+
+
+
+# class BaseManager:
+#     MODEL = None
+#     UNIQUE_CONSTRAINT_MESSAGE = "Unique constraint: Object already exist!"
+#     PERMISSION_DENIED_MESSAGE = "Permission denied!"
+#     _INSTANCE = None
+#
+#     # Todo to add attr for custom message for handle_unique
+#     @handle_unique_constrain_violation
+#     def create(self, data, user, **kwargs):
+#         if not hasattr(self.get_model(), "creator_id") and user:
+#             data["creator_id"] = user.id
+#
+#         if not hasattr(self.get_model(), "get_all_image_field_names"):
+#             return self._create_obj(self.get_model(), data)
+#
+#         # return self._processed_with_photos(self.get_model(), data, add_to_db=add_to_db)
+#
+#     def get(self, pk, **kwargs):
+#         return self._get_instance(pk)
+
+    # def get_list(self, filter_by, **kwargs):
+    #     query = self.get_model().query
+    #     for field, criteria in filter_by.items():
+    #         if ".in" in field:
+    #             field_name = field.split(".")[0]
+    #             query = query.filter(getattr(self.get_model(), field_name).contains(criteria))
+    #         else:
+    #             current_criteria = {field: criteria}
+    #             query = query.filter_by(**current_criteria)
+    #
+    #     try:
+    #         return query.all()
+    #     except InvalidRequestError:
+    #         # Invalid query string
+    #         return []
+
     # @handle_unique_constrain_violation
-    def create(self, data, user, add_to_db=True, **kwargs):
-        if self._uniqueness_required():
-            self._check_uniqueness(user)
-
-        data["holder_id"] = self._get_holder_id(user)
-
-        if not hasattr(self.get_model(), "get_all_image_field_names"):
-            return self._create_obj(self.get_model(), data, add_to_db)
-
-        # return self._processed_with_photos(self.get_model(), data, add_to_db=add_to_db)
-
-    def get(self, pk, **kwargs):
-        self._check_access(pk, **kwargs)
-        return self._get_instance(pk)
-
-    def get_list(self, filter_by, **kwargs):
-        query = self.get_model().query
-        for field, criteria in filter_by.items():
-            if ".in" in field:
-                field_name = field.split(".")[0]
-                query = query.filter(getattr(self.get_model(), field_name).contains(criteria))
-            else:
-                current_criteria = {field: criteria}
-                query = query.filter_by(**current_criteria)
-
-        try:
-            return query.all()
-        except InvalidRequestError:
-            # Invalid query string
-            return []
-
-    # @handle_unique_constrain_violation
-    def edit(self, data, pk, **kwargs):
-        self._check_access(pk, **kwargs)
-        instance = self._get_instance(pk)
-        if not hasattr(self.get_model(), "get_all_image_field_names"):
-            self.get_model().query.filter_by(id=instance.id).update(data)
-            return instance
+    # def edit(self, data, pk, **kwargs):
+    #     instance = self._get_instance(pk)
+    #     if not hasattr(self.get_model(), "get_all_image_field_names"):
+    #         self.get_model().query.filter_by(id=instance.id).update(data)
+    #         return instance
 
         # return self._processed_with_photos(self.get_model(), data, instance)
 
-    def delete(self, pk, **kwargs):
-        self._check_access(pk, **kwargs)
-        instance = self._get_instance(pk)
-        if not hasattr(self.get_model(), "get_all_image_field_names"):
-            self.get_model().query.filter_by(id=instance.id).delete()
-            return None
+    # def delete(self, pk, **kwargs):
+    #     instance = self._get_instance(pk)
+    #     if not hasattr(self.get_model(), "get_all_image_field_names"):
+    #         self.get_model().query.filter_by(id=instance.id).delete()
+    #         return None
 
         # return self._delete_with_photos(self.get_model(), instance)
 
@@ -84,18 +104,17 @@ class BaseManager:
     #     s3.delete_photo(photo)
     #     return instance
 
-    def _get_instance(self, pk):
-        if not self._INSTANCE:
-            self._INSTANCE = helpers.get_or_404(self.get_model(), pk)
-        return self._INSTANCE
-
-    @staticmethod
-    def _create_obj(model, data, add_to_db=True):
-        instance = model(**data)
-        if add_to_db:
-            db.session.add(instance)
-            db.session.flush()
-        return instance
+    # def _get_instance(self, pk):
+    #     if not self._INSTANCE:
+    #         self._INSTANCE = helpers.get_or_404(self.get_model(), pk)
+    #     return self._INSTANCE
+    #
+    # @staticmethod
+    # def _create_obj(model, data):
+    #     instance = model(**data)
+    #     db.session.add(instance)
+    #     db.session.flush()
+    #     return instance
 
     # TODO: INTEGRATE S3 BUCKET FOR STORING PICTURES
     # def _processed_with_photos(self, model, data, instance=None, add_to_db=True):
@@ -140,12 +159,9 @@ class BaseManager:
     #         [os.remove(path) for path in paths]
     #
     #     return instance
+    #
 
-    @classmethod
-    def get_model(cls):
-        return cls.MODEL
-
-    #TODO
+    # TODO
     # @staticmethod
     # def _delete_with_photos(model, instance, **kwargs):
     #     image_field_names = model.get_all_image_field_names()
@@ -158,30 +174,9 @@ class BaseManager:
     #     model.query.filter_by(id=instance.id).delete()
     #     [s3.delete_photo(photo) for photo in photo_to_delete if photo]
 
-    def _check_uniqueness(self, user):
-        if self.get_model().query.filter_by(holder_id=user.id).first():
-            raise Forbidden(self.UNIQUE_CONSTRAINT_MESSAGE)
 
-    def _is_holder(self, instance, user):
-    #TODO: add admin role
-        # if user.role in AdminRoles:
-        #     return
 
-        if not user or not instance.holder_id == user.id:
-            raise Forbidden(self.PERMISSION_DENIED_MESSAGE)
 
-    def _check_access(self, pk, **kwargs):
-        if self._INSTANCE:
-            return
-        instance = self._get_instance(pk)
-        if kwargs.get("holder_required"):
-            user = kwargs.get("user")
-            self._is_holder(instance, user)
-        self._INSTANCE = instance
 
-    def _uniqueness_required(self):
-        return self.UNIQUE
 
-    def _get_holder_id(self, user):
-        if hasattr(self.get_model(), "holder_id") and user:
-            return user.id
+
