@@ -15,7 +15,7 @@ class CreateResourceMixin(ABC, BaseResource):
             data,
             current_user,
             **kwargs)
-        return self.get_schema_out(instance=instances)(many=isinstance(instances, list)).dump(instances), 201
+        return self.serialize_obj(instances), 201
 
 
 class GetResourceMixin(ABC, BaseResource):
@@ -23,8 +23,8 @@ class GetResourceMixin(ABC, BaseResource):
 
     @abstractmethod
     def get(self, pk, **kwargs):
-        instance = self.get_manager()().get(pk, **kwargs)
-        return self.get_schema_out(instance=instance)().dump(instance), 200
+        instances = self.get_manager()().get(pk, **kwargs)
+        return self.serialize_obj(instances), 200
 #
 #
 # class GetListResourceMixin(ABC, BaseResource):

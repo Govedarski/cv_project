@@ -17,11 +17,9 @@ class ProfileModel(BaseModel):
                            nullable=False,
                            unique=True)
 
-    first_name = db.Column(db.String(255),
-                           nullable=False)
+    first_name = db.Column(db.String(255))
 
-    last_name = db.Column(db.String(255),
-                          nullable=False)
+    last_name = db.Column(db.String(255))
 
     data_of_birth = db.Column(db.String(10))
 

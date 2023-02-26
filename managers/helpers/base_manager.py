@@ -38,6 +38,8 @@ class BaseManager:
 
 
 
+
+
 # class BaseManager:
 #     MODEL = None
 #     UNIQUE_CONSTRAINT_MESSAGE = "Unique constraint: Object already exist!"

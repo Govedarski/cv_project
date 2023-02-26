@@ -35,3 +35,6 @@ class BaseResource(Resource):
     def get_user(self, *args, **kwargs):
         """Override this method for user validation as is he creator or has he permissions"""
         return auth.current_user()
+
+    def serialize_obj(self, instances):
+        return self.get_schema_out(instance=instances)(many=isinstance(instances, list)).dump(instances)
