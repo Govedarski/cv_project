@@ -39,7 +39,7 @@ class BaseResource(Resource):
         return self.MANAGER
 
     @admin_access_granted
-    def validate_current_user(self, *args, **kwargs) -> UserModel:
+    def get_valid_current_user(self, *args, **kwargs) -> UserModel:
         """Override this method for custom user validation."""
         current_user = auth.current_user()
         self.check_roles(current_user, *args, **kwargs)
@@ -57,8 +57,8 @@ class BaseResource(Resource):
     def check_permissions(self, current_user, *args, **kwargs):
         return
 
-    def serialize_obj(self, instances, schema=None):
-        schema = schema or self.get_schema_out()
+    def serialize_obj(self, instances, schema=None, *args, **kwargs):
+        schema = schema or self.get_schema_out(*args, **kwargs)
         return schema(many=isinstance(instances, list)).dump(instances)
 
     def is_admins_allowed(self):

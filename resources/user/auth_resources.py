@@ -32,7 +32,7 @@ class ChangePasswordResource(BaseResource):
 
     @auth.login_required
     def put(self, user_id, **kwargs):
-        self.validate_current_user(_id=user_id, **kwargs)
+        self.get_valid_current_user(_id=user_id, **kwargs)
         data = self.get_data()
         instance = self.get_manager()().change_password(
             data,

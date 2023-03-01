@@ -41,15 +41,19 @@ class AuthManager:
 
 class Auth(HTTPTokenAuth):
     @staticmethod
-    def user_data(func):
+    def login_optional(func):
         """Create current_user if request is authenticated"""
 
         def wrapper(*args, **kwargs):
             authorization_header = request.headers.get('Authorization')
             if authorization_header:
                 token = authorization_header[7:]
-                user_id, user_model = AuthManager.decode_token(token).values()
-                user = UserModel.query.filter_by(id=user_id).first()
+                try:
+                    user_id, user_model = AuthManager.decode_token(token).values()
+                    user = UserModel.query.filter_by(id=user_id).first()
+                except Unauthorized:
+                    user = None
+
                 g.flask_httpauth_user = user
 
             return func(*args, **kwargs)

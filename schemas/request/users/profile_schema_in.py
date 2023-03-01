@@ -3,6 +3,7 @@ from marshmallow_enum import EnumField
 
 from constants.extensions import ValidExtension
 from models.enums.contact_method_enum import ContactMethods
+from models.user.profile_model import ProfileFieldsEnum
 from schemas.validators.common_validators import ValidateIsAlphaAndSpace, ValidateExtension, ValidateIsNumeric
 
 
@@ -41,4 +42,10 @@ class ProfileSchemaIn(Schema):
 
     profile_picture_extension = fields.String(
         validate=ValidateExtension(ValidExtension.image).validate
+    )
+
+    public_fields = fields.List(
+        EnumField(ProfileFieldsEnum,
+                  error_messages={'by_name': "Invalid field name"}
+                  )
     )

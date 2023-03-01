@@ -9,7 +9,7 @@ class CreateResourceMixin(ABC, BaseResource):
 
     @abstractmethod
     def post(self, **kwargs):
-        current_user = self.validate_current_user()
+        current_user = self.get_valid_current_user()
         data = self.get_data()
         instances = self.get_manager()().create(data, current_user)
         return self.serialize_obj(instances), 201
@@ -28,7 +28,7 @@ class LoginResourceMixin(ABC, BaseResource):
 class PromoteResourceMixin(ABC, BaseResource):
     @auth.login_required
     def post(self, user_id):
-        self.validate_current_user(_id=user_id)
+        self.get_valid_current_user(_id=user_id)
         data = self.get_data()
         token, user_subclass_instance = self.get_manager().promote(data, user_id)
         return self.create_login_response(token, user_subclass_instance)
@@ -39,9 +39,9 @@ class GetResourceMixin(ABC, BaseResource):
 
     @abstractmethod
     def get(self, _id, **kwargs):
-        self.validate_current_user(_id=_id)
+        self.get_valid_current_user(_id=_id)
         instances = self.get_manager()().get(_id, **kwargs)
-        return self.serialize_obj(instances), 200
+        return self.serialize_obj(instances, _id=_id, **kwargs), 200
 
 
 class EditResourceMixin(ABC, BaseResource):
@@ -49,7 +49,7 @@ class EditResourceMixin(ABC, BaseResource):
 
     @abstractmethod
     def put(self, _id, **kwargs):
-        self.validate_current_user(_id=_id)
+        self.get_valid_current_user(_id=_id)
         data = self.get_data()
         instance = self.get_manager()().edit(
             data,
