@@ -3,6 +3,7 @@ from werkzeug.security import generate_password_hash
 from constants.endpoints import Endpoints
 from constants.strings import IDENTIFIER, PASSWORD, USERNAME, EMAIL
 from managers.user_manager import UserManager
+from models.user.profile_model import TalentModel
 from tests.base_test_case import BaseTestCase
 from tests.factories.user_factory import UserFactory
 
@@ -48,6 +49,7 @@ class TestLoginCustomer(BaseTestCase):
         token = response.json['token']
         decoded_token = self._decode_token(token)
         self.assertEqual(self.user.id, decoded_token['id'])
+        self.assertTrue(decoded_token.get("model") is TalentModel)
 
     def _assert_unsuccessful_login(self, response):
         self.assert400(response)

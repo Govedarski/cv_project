@@ -4,11 +4,9 @@ from utils.CustomEnum import StaticCustomEnum
 
 
 class Endpoints(StaticCustomEnum):
-    REGISTER_USER = (Routes.REGISTER_USER.url, methods.POST)
-    LOGIN_USER = (Routes.LOGIN_USER.url, methods.POST)
+    REGISTER_USER = (Routes.REGISTER.url, methods.POST)
+    LOGIN_USER = (Routes.LOGIN_JOB_SEEKER.url, methods.POST)
 
-    CREATE_PROFILE = (Routes.PROFILE.url, methods.POST)
-    SHOW_PROFILE = (Routes.PROFILE.url, methods.GET)
-    UPDATE_PROFILE = (Routes.PROFILE.url, methods.PUT)
-    MODIFY_PROFILE = (Routes.PROFILE.url, methods.PATCH)
-    DELETE_PROFILE = (Routes.PROFILE.url, methods.DELETE)
+
+    SHOW_USER = (Routes.TALENT.url, methods.GET)
+    UPDATE_USER = (Routes.TALENT.url, methods.GET)

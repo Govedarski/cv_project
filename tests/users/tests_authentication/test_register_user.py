@@ -1,5 +1,5 @@
 from constants.endpoints import Endpoints
-from models.user_models import UserModel
+from models.user.user_model import UserModel
 from schemas.validators.common_validators import ValidateIsAlphaNumericAndSpace
 from schemas.validators.password_validator import PasswordValidator
 from tests.base_test_case import BaseTestCase
@@ -24,6 +24,12 @@ class TestUserRegistration(BaseTestCase):
         token = resp.json['token']
         decoded_token = self._decode_token(token)
         self.assertEqual(1, decoded_token['id'])
+        self.assertIn("user", resp.json)
+        self.assertIn("id", resp.json["user"])
+        self.assertIn("user_identifiers", resp.json["user"])
+        self.assertEqual(resp.json["user"]["id"], resp.json["user"]["talent_id"])
+        self.assertEqual(self.VALID_USER_DATA["email"], resp.json["user"]["email"])
+        self.assertEqual(self.VALID_USER_DATA["username"], resp.json["user"]["username"])
 
     def test_register_existing_credential_expect_400_customer_not_added_to_db_and_correct_error(self):
         self.client.post(self.URL,

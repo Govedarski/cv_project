@@ -1,10 +1,8 @@
-from werkzeug.exceptions import BadRequest
-
 from db import db
+from models.helpers.base_model import BaseModel
 
 # from services.s3_aws_service import s3
 from utils import helpers
-from managers.helpers.decorators import handle_unique_constrain_violation
 
 
 # from utils.decorators import handle_unique_constrain_violation
@@ -16,12 +14,12 @@ class BaseManager:
     _INSTANCE = None
 
     @classmethod
-    def get_model(cls):
+    def get_model(cls) -> BaseModel:
         return cls.MODEL
 
-    def _get_instance(self, pk):
+    def _get_instance(self, _id):
         if not self._INSTANCE:
-            self._INSTANCE = helpers.get_or_404(self.get_model(), pk)
+            self._INSTANCE = helpers.get_or_404(self.get_model(), _id)
         return self._INSTANCE
 
     @staticmethod

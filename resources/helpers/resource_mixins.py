@@ -9,23 +9,55 @@ class CreateResourceMixin(ABC, BaseResource):
 
     @abstractmethod
     def post(self, **kwargs):
-        current_user = self.get_user()
+        current_user = self.validate_current_user()
         data = self.get_data()
-        instances = self.get_manager()().create(
-            data,
-            current_user,
-            **kwargs)
+        instances = self.get_manager()().create(data, current_user)
         return self.serialize_obj(instances), 201
 
 
+class LoginResourceMixin(ABC, BaseResource):
+    @abstractmethod
+    def post(self):
+        data = self.get_data()
+        token, user_data = self.get_manager().login(data)
+        if not user_data:
+            return self.create_login_response(token, user_data)
+        return self.create_login_response(token, user_data), 200
+
+
+class PromoteResourceMixin(ABC, BaseResource):
+    @auth.login_required
+    def post(self, user_id):
+        self.validate_current_user(_id=user_id)
+        data = self.get_data()
+        token, user_subclass_instance = self.get_manager().promote(data, user_id)
+        return self.create_login_response(token, user_subclass_instance)
+
+
 class GetResourceMixin(ABC, BaseResource):
-    """Minimum required class attributes: SCHEMA_OUT"""
+    """Minimum required class attributes: MANAGER and SCHEMA_OUT"""
 
     @abstractmethod
-    def get(self, pk, **kwargs):
-        instances = self.get_manager()().get(pk, **kwargs)
+    def get(self, _id, **kwargs):
+        self.validate_current_user(_id=_id)
+        instances = self.get_manager()().get(_id, **kwargs)
         return self.serialize_obj(instances), 200
-#
+
+
+class EditResourceMixin(ABC, BaseResource):
+    """Minimum required class attributes: MANAGER, SCHEMA_IN and SCHEMA_OUT"""
+
+    @abstractmethod
+    def put(self, _id, **kwargs):
+        self.validate_current_user(_id=_id)
+        data = self.get_data()
+        instance = self.get_manager()().edit(
+            data,
+            _id,
+            **kwargs)
+
+        return self.get_schema_out(instance=instance)().dump(instance), 200
+
 #
 # class GetListResourceMixin(ABC, BaseResource):
 #     """Minimum required class attributes: SCHEMA_OUT"""
@@ -39,20 +71,13 @@ class GetResourceMixin(ABC, BaseResource):
 #         return {}
 #
 #
-# class EditResourceMixin(ABC, BaseResource):
-#     """Minimum required class attributes: SCHEMA_OUT"""
-#
-#     @abstractmethod
-#     def put(self, pk, **kwargs):
-#         data = self.get_data()
-#         instance = self.get_manager()().edit(data, pk, **kwargs)
-#         return self.get_schema_out(instance=instance)().dump(instance), 200
+
 #
 #
 # class DeleteResourceMixin(ABC, BaseResource):
 #     @abstractmethod
-#     def delete(self, pk, **kwargs):
-#         self.get_manager()().delete(pk, **kwargs)
+#     def delete(self, _id, **kwargs):
+#         self.get_manager()().delete(_id, **kwargs)
 #         return None, 204
 #
 #
@@ -61,9 +86,9 @@ class GetResourceMixin(ABC, BaseResource):
 #     IMAGE_FIELD_NAME = ""
 #
 #     @abstractmethod
-#     def delete(self, pk, **kwargs):
-#         instance = self.get_manager()().delete_image(pk, self.IMAGE_FIELD_NAME, **kwargs)
-#         return self.get_schema_out(instace=instance)().dump(instance), 200
+#     def delete(self, _id, **kwargs):
+#         instance = self.get_manager()().delete_image(_id, self.IMAGE_FIELD_NAME, **kwargs)
+#         return self.get_schema_out(instance=instance)().dump(instance), 200
 #
 #
 # class RemoveIbanSpacesMixin:

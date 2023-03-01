@@ -6,7 +6,7 @@ from schemas.validators.common_validators import ValidateIsAlphaNumericAndSpace
 from schemas.validators.password_validator import PasswordValidator
 
 
-class RegisterSchemaIn(ProfileSchemaIn):
+class IdentifiersSchemaIn(Schema):
     email = fields.Email(required=True)
 
     username = fields.Str(validate=validate.And(
@@ -14,6 +14,7 @@ class RegisterSchemaIn(ProfileSchemaIn):
         ValidateIsAlphaNumericAndSpace().validate
     ))
 
+class RegisterCredentialsSchemaIn(IdentifiersSchemaIn):
     password = fields.Str(required=True,
                           validate=PasswordValidator().validate_password)
 
@@ -23,7 +24,25 @@ class RegisterSchemaIn(ProfileSchemaIn):
         return data
 
 
+class RegisterSchemaIn(Schema):
+    credentials = fields.Nested(RegisterCredentialsSchemaIn,
+                                required=True)
+    profile_data = fields.Nested(ProfileSchemaIn)
+
+
 class LoginSchemaIn(Schema):
     identifier = fields.Str(required=True)
 
     password = fields.Str(required=True)
+
+
+class ChangePasswordSchemaIn(Schema):
+    old_password = fields.Str(required=True)
+
+    new_password = fields.Str(required=True,
+                              validate=PasswordValidator().validate_password)
+
+    @post_load
+    def hash_password(self, data, *args, **kwargs):
+        data["new_password"] = generate_password_hash(data["new_password"])
+        return data

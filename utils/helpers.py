@@ -46,3 +46,4 @@ def get_photo_name_by_url(photo_url):
         return photo_url.split("/")[-1]
     except AttributeError:
         return None
+

@@ -1,6 +1,6 @@
 import factory
 
-from models.user_models import UserModel
+from models.user.user_model import UserModel
 from tests.factories.base_factory import BaseFactory
 
 
