@@ -1,5 +1,4 @@
 from db import db
-from models.helpers.model_mixins import CreatedModelMixin
 from models.user.user_model import UserModel, UserSubclass
 
 

@@ -2,7 +2,6 @@ from sqlalchemy.orm import declared_attr
 
 from db import db
 from models.helpers.base_model import BaseModel
-from models.helpers.model_mixins import CreatedModelMixin
 
 
 class UserModel(BaseModel):
@@ -45,11 +44,11 @@ class UserModel(BaseModel):
         return cls._subclasses.get(name)
 
 
-class UserSubclass(CreatedModelMixin):
+class UserSubclass(BaseModel):
     __abstract__ = True
 
     @declared_attr
-    def id(cls):
+    def id(self):
         return db.Column(
             db.Integer,
             db.ForeignKey("user.id"),
