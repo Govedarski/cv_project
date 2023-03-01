@@ -1,8 +1,8 @@
-from managers.helpers.manager_mixins import CreateManagerMixin
+from managers.helpers.manager_mixins import CreateManagerMixin, GetManagerMixin
 from models.user.profile_model import ProfileModel
 
 
-class ProfileManager(CreateManagerMixin):
+class ProfileManager(CreateManagerMixin, GetManagerMixin):
     MODEL = ProfileModel
 
     @classmethod

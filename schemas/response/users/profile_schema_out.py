@@ -12,12 +12,14 @@ class ProfileSchemaOut(Schema):
 
     last_name = fields.Str()
 
+    date_of_birth = fields.Str()
+
     city = fields.Str()
 
     address = fields.Str()
 
     phone_number = fields.Str()
 
-    profile_picture_binary = fields.Str()
+    profile_picture_file_url = fields.Str()
 
 

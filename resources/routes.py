@@ -4,6 +4,7 @@ from resources.user.auth_resources import RegisterResource, LoginJobSeekerResour
 from resources.user.employer_resource import EmployerResource
 # from resources.user.profile_resources import ProfileResource
 from resources.user.job_seeker_resource import JobSeekerResource
+from resources.user.profile_resources import ProfileResource
 from resources.user.user_resource import UserResource
 from utils.CustomEnum import CustomEnum, StaticCustomEnum
 from models.user.job_seeker_model import JobSeekerModel
