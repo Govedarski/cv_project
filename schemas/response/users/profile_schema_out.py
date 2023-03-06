@@ -1,7 +1,7 @@
 from marshmallow import Schema, fields
 from marshmallow_enum import EnumField
 
-from models.enums.contact_method_enum import ContactMethods
+from models.user.profile_model import ProfileFieldsEnum
 
 
 class ProfileSchemaOut(Schema):
@@ -21,6 +21,10 @@ class ProfileSchemaOut(Schema):
     phone_number = fields.Str()
 
     profile_picture_file_url = fields.Str()
+
+    public_fields = fields.List(EnumField(ProfileFieldsEnum,
+                                          by_name=True)
+                                )
 
 
 class PublicProfileSchemaOut(Schema):

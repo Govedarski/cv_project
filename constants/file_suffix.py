@@ -1,0 +1,3 @@
+FILE_SUFFIX_IN_DB = "_file_url"
+FILE_SUFFIX_IN_SCHEMA = "_binary"
+EXTENSION_SUFFIX_IN_SCHEMA = "_extension"

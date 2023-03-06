@@ -8,7 +8,7 @@ from models.user.user_model import UserModel
 
 
 class UserManager(CreateManagerMixin, LoginManagerMixin, EditManagerMixin, GetManagerMixin):
-    MODEL = UserModel
+    model = UserModel
 
     @classmethod
     def register(cls, data):

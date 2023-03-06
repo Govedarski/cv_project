@@ -8,28 +8,33 @@ from schemas.validators.common_validators import ValidateIsAlphaAndSpace, Valida
 
 
 class ProfileSchemaIn(Schema):
-    first_name = fields.Str(validate=validate.And(
+    first_name = fields.Str(allow_none=True,
+        validate=validate.And(
         validate.Length(min=2, max=64),
         ValidateIsAlphaAndSpace().validate
     ))
-    last_name = fields.Str(validate=validate.And(
+    last_name = fields.Str(allow_none=True,
+        validate=validate.And(
         validate.Length(min=2, max=64),
         ValidateIsAlphaAndSpace().validate
     ))
 
-    city = fields.Str(validate=validate.And(
-        validate.Length(min=2, max=64),
-        ValidateIsAlphaAndSpace().validate
-    ))
+    city = fields.Str(allow_none=True,
+                      validate=validate.And(
+                          validate.Length(min=2, max=64),
+                          ValidateIsAlphaAndSpace().validate
+                      ))
 
-    address = fields.Str()
+    address = fields.Str(allow_none=True,)
 
     # Todo: add dateformat validator
-    data_of_birth = fields.Str(validate=validate.And(
+    data_of_birth = fields.Str(allow_none=True,
+        validate=validate.And(
         validate.Length(equal=10),
     ))
 
-    phone_number = fields.Str(validate=validate.And(
+    phone_number = fields.Str(allow_none=True,
+        validate=validate.And(
         validate.Length(equal=9),
         ValidateIsNumeric().validate
     ))
@@ -38,9 +43,9 @@ class ProfileSchemaIn(Schema):
                                          error_messages={'by_name': "Invalid method"}
                                          )
 
-    profile_picture_binary = fields.String()
+    profile_picture_binary = fields.String(allow_none=True,)
 
-    profile_picture_extension = fields.String(
+    profile_picture_extension = fields.String(allow_none=True,
         validate=ValidateExtension(ValidExtension.image).validate
     )
 

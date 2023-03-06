@@ -7,7 +7,7 @@ from constants.strings import IDENTIFIER, PASSWORD, PAGE_NOT_FOUND
 from managers.auth_manager import AuthManager
 from managers.helpers.base_manager import BaseManager
 from managers.helpers.decorators import handle_unique_constrain_violation
-from managers.helpers.image_manager import ImageManager
+from managers.helpers.file_manager import FileManager
 from models.user.user_model import UserModel
 
 
@@ -18,10 +18,18 @@ class CreateManagerMixin(BaseManager):
         if hasattr(cls.get_model(), "owner_id") and user:
             data["owner_id"] = user.id
 
-        if cls.need_image_handler():
-            return ImageManager.create_with_images(cls.get_model(), data)
+        file_manager = FileManager(cls.get_model())
 
-        return cls.create_obj(cls.get_model(), data)
+        try:
+            file_manager.create_file_links(data)
+            instance = cls.create_obj(cls.get_model(), data)
+        except Exception as ex:
+            file_manager.delete_from_cloud(file_manager.names_of_created_files)
+            raise ex
+        finally:
+            file_manager.delete_all_from_server()
+
+        return instance
 
 
 class PromoteManagerMixin(CreateManagerMixin):
@@ -67,8 +75,18 @@ class EditManagerMixin(BaseManager):
     def edit(self, data, _id, **kwargs):
         instance = self._get_instance(_id)
 
-        if self.need_image_handler():
-            return ImageManager.edit_with_images(self.get_model(), data, instance)
+        file_manager = FileManager(self.get_model())
+        file_manager.edit(instance)
 
-        self.get_model().query.filter_by(id=instance.id).update(data)
+        try:
+            file_manager.create_file_links(data)
+            self.get_model().query.filter_by(id=instance.id).update(data)
+        except Exception as ex:
+            file_manager.delete_from_cloud(file_manager.names_of_created_files)
+            raise ex
+        finally:
+            file_manager.delete_all_from_server()
+
+        file_manager.delete_old_file_from_cloud()
+
         return instance

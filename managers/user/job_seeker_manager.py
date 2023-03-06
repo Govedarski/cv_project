@@ -4,7 +4,7 @@ from models.user.job_seeker_model import JobSeekerModel
 
 
 class JobSeekerManager(PromoteManagerMixin, LoginManagerMixin, GetManagerMixin, EditManagerMixin):
-    MODEL = JobSeekerModel
+    model = JobSeekerModel
 
     @classmethod
     def promote(cls, data, user_id):

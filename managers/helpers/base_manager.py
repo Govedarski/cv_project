@@ -8,19 +8,19 @@ from utils import helpers
 # from utils.decorators import handle_unique_constrain_violation
 
 class BaseManager:
-    MODEL = None
+    model = None
     UNIQUE_CONSTRAINT_MESSAGE = "Unique constraint: Object already exist!"
     PERMISSION_DENIED_MESSAGE = "Permission denied!"
-    _INSTANCE = None
+    _instance = None
 
     @classmethod
     def get_model(cls) -> BaseModel:
-        return cls.MODEL
+        return cls.model
 
     def _get_instance(self, _id):
-        if not self._INSTANCE:
-            self._INSTANCE = helpers.get_or_404(self.get_model(), _id)
-        return self._INSTANCE
+        if not self._instance:
+            self._instance = helpers.get_or_404(self.get_model(), _id)
+        return self._instance
 
     @staticmethod
     def create_obj(model, data, add_to_db=True):
@@ -32,7 +32,7 @@ class BaseManager:
 
     @classmethod
     def need_image_handler(cls):
-        return hasattr(cls.get_model(), "get_all_image_field_names")
+        return hasattr(cls.get_model(), "NEED_FILE_HANDLER")
 
 
 

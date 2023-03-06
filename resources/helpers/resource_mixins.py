@@ -51,12 +51,12 @@ class EditResourceMixin(ABC, BaseResource):
     def put(self, _id, **kwargs):
         self.get_valid_current_user(_id=_id)
         data = self.get_data()
-        instance = self.get_manager()().edit(
+        instances = self.get_manager()().edit(
             data,
             _id,
             **kwargs)
 
-        return self.get_schema_out(instance=instance)().dump(instance), 200
+        return self.serialize_obj(instances, _id=_id, **kwargs), 200
 
 #
 # class GetListResourceMixin(ABC, BaseResource):

@@ -26,12 +26,12 @@ def save_file(path, file):
         f.write(file)
 
 
-def create_photo(photo_str, extension):
+def create_file(photo_str, extension):
     file_name = f"{str(uuid.uuid4())}.{extension}"
     return file_name, decode_file(photo_str)
 
 
-def has_photo(photo_str, extension):
+def has_file_data(photo_str, extension):
     if not photo_str and extension:
         raise BadRequest("There is not photo provided!")
     elif photo_str and not extension:
@@ -41,7 +41,7 @@ def has_photo(photo_str, extension):
     return True
 
 
-def get_photo_name_by_url(photo_url):
+def get_file_name_by_url(photo_url):
     try:
         return photo_url.split("/")[-1]
     except AttributeError:

@@ -35,7 +35,7 @@ class Routes(StaticCustomEnum):
     USER = Route(UserResource, "/user/<int:user_id>")  # GET, PUT
     JOB_SEEKER = Route(JobSeekerResource, "/user/<int:user_id>/job_seeker")  # POST, GET, PUT
     EMPLOYER = Route(EmployerResource, "/user/<int:user_id>/employer")  # POST, GET, PUT
-    PROFILE = Route(ProfileResource, "/user/<int:user_id>/profile") # GET,
+    PROFILE = Route(ProfileResource, "/user/<int:user_id>/profile") # GET, PUT
     # PUT AND IMAGE
 
     # TALENT = Route(TalentResource, "/talent/<int:talent_id>")  # GET, PUT, DELETE for users
