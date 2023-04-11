@@ -1,7 +1,7 @@
 from resources.cv.awards_and_achievements_resource import CreateAwardsAndAchievementsResource, \
     AwardsAndAchievementsResource
 from resources.cv.certificate_resource import CreateCertificateResource, CertificateResource
-from resources.cv.cv_resource import CVResource
+from resources.cv.cv_resource import CVResource, CVDetailsResource
 from resources.cv.education_resource import CreateEducationResource, EducationResource
 from resources.cv.reference_resource import ReferenceResource, CreateReferenceResource
 from resources.cv.requirement_resource import CreateRequirementResource, RequirementResource
@@ -47,7 +47,9 @@ class Routes(StaticCustomEnum):
     PROFILE = Route(ProfileResource, "/user/<int:user_id>/profile")  # GET, PUT
     PROFILE_PICTURE = Route(ProfilePictureResource, "/user/<int:user_id>/profile/profile_picture")  # Delete
 
-    CV = Route(CVResource, "/user/<int:user_id>/cv")  # POST
+    CV = Route(CVResource, "/user/<int:user_id>/cv")  # POST, GET
+    CV_DETAILS = Route(CVDetailsResource, "/user/<int:user_id>/cv/<int:cv_id>")  # GET
+
     CREATE_REFERENCE = Route(CreateReferenceResource, "/user/<int:user_id>/reference")  # POST
     REFERENCE = Route(ReferenceResource, "/user/<int:user_id>/reference/<int:reference_id>")  # GET
 

@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 
+from sqlalchemy.exc import InvalidRequestError
 from werkzeug.exceptions import NotFound, BadRequest
 from werkzeug.security import check_password_hash
 
@@ -90,3 +91,21 @@ class EditManagerMixin(BaseManager):
         file_manager.delete_old_file_from_cloud()
 
         return instance
+
+
+class GetListManagerMixin(BaseManager):
+    def get_list(self, filter_by, **kwargs):
+        query = self.get_model().query
+        for field, criteria in filter_by.items():
+            if ".in" in field:
+                field_name = field.split(".")[0]
+                query = query.filter(getattr(self.get_model(), field_name).contains(criteria))
+            else:
+                current_criteria = {field: criteria}
+                query = query.filter_by(**current_criteria)
+
+        try:
+            return query.all()
+        except InvalidRequestError:
+            # Invalid query string
+            return []

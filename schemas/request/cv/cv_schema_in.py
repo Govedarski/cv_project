@@ -7,6 +7,13 @@ from schemas.validators.common_validators import ValidateIsAlphaNumericAndSpace
 
 
 class CVSchemaIn(Schema):
+    name=fields.Str(
+        allow_none=True,
+        validate=validate.And(
+            validate.Length(min=3, max=64),
+            ValidateIsAlphaNumericAndSpace().validate
+        ))
+
     hobbies = fields.Str(
         allow_none=True,
         validate=validate.And(

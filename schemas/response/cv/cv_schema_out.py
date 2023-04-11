@@ -11,11 +11,13 @@ class CVSchemaOut(Schema):
 
     id = fields.Integer(required=True)
 
+    name = fields.String()
+
     owner_id = fields.Integer(required=True)
 
-    hobbies = fields.String(required=True)
+    hobbies = fields.String()
 
-    summary = fields.String(required=True)
+    summary = fields.String()
 
     education_level = EnumField(EducationLevelEnum,
                                 by_name=True)

@@ -16,6 +16,7 @@ class CVModel(BaseModel):
     __tablename__ = 'cv'
     id = db.Column(db.Integer, primary_key=True)
     owner_id = db.Column(db.Integer, db.ForeignKey('job_seeker.id'), nullable=False)
+    name = db.Column(db.String(64))
     # certificates = db.relationship('Certificate', secondary='cv_certificate', backref='cvs')
     hobbies = db.Column(db.String(100))
     summary = db.Column(db.String(500))
