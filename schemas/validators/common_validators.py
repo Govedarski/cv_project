@@ -11,7 +11,7 @@ class ValidateExtension:
 
 
 class ValidateIsAlphaNumericAndSpace:
-    ERROR = "Must contain only letters and spaces!"
+    ERROR = "Must contain only letters, numbers and spaces!"
 
     def validate(self, value):
         if not value.replace(" ", "").isalnum():

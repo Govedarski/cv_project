@@ -1,5 +1,5 @@
 from managers.auth_manager import auth
-from models.enums.user_roles_enum import AdminRoles
+from models.enums.user.user_roles_enum import AdminRoles
 
 
 def admin_access_granted(func):

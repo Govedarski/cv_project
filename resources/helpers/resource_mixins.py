@@ -74,12 +74,12 @@ class EditResourceMixin(ABC, BaseResource):
 
 #
 #
-# class DeleteResourceMixin(ABC, BaseResource):
-#     @abstractmethod
-#     def delete(self, _id, **kwargs):
-#         self.get_manager()().delete(_id, **kwargs)
-#         return None, 204
-#
+class DeleteResourceMixin(ABC, BaseResource):
+    @abstractmethod
+    def delete(self, _id, **kwargs):
+        self.get_manager()().delete(_id, **kwargs)
+        return {"deleted": True}, 200
+
 #
 # class DeleteImageResourceMixin(ABC, BaseResource):
 #     """Minimum required class attributes: IMAGE_FIELD_NAME, SCHEMA_OUT"""

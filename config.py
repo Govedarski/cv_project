@@ -53,7 +53,7 @@ def create_app(configuration=None):
     Migrate(app, db)
     db.init_app(app)
 
-    # CORS(app)
+    CORS(app)
 
     [api.add_resource(*route.values()) for route in Routes.values()]
     return app

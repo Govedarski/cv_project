@@ -1,14 +1,16 @@
+from sqlalchemy.exc import IntegrityError
 from werkzeug.exceptions import BadRequest
 from werkzeug.security import check_password_hash
 
 from managers.auth_manager import AuthManager
 from managers.helpers.manager_mixins import CreateManagerMixin, LoginManagerMixin, EditManagerMixin, GetManagerMixin
+from managers.user.job_seeker_manager import JobSeekerManager
 from managers.user.profile_manager import ProfileManager
 from models.user.user_model import UserModel
 
 
 class UserManager(CreateManagerMixin, LoginManagerMixin, EditManagerMixin, GetManagerMixin):
-    model = UserModel
+    MODEL = UserModel
 
     @classmethod
     def register(cls, data):
@@ -20,6 +22,16 @@ class UserManager(CreateManagerMixin, LoginManagerMixin, EditManagerMixin, GetMa
         token = AuthManager.encode_token(user)
 
         return token, user
+
+    @classmethod
+    def register_job_seeker(cls, data):
+        profile_data = data.get('profile_data', {})
+        credentials_data = data.get('credentials')
+
+        user = cls.create(credentials_data)
+        ProfileManager.create(profile_data, user)
+
+        return JobSeekerManager.promote({}, user.id)
 
     @classmethod
     def login(cls, data):

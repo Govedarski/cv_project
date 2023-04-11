@@ -14,7 +14,7 @@ class AuthManager:
     MISSING_TOKEN_MESSAGE = "Missing token!"
     TOKEN_EXPIRED_MESSAGE = "Token expired!"
     INVALID_TOKEN_MESSAGE = "Invalid token!"
-    TOKEN_LIFETIME_IN_HOURS = 2
+    TOKEN_LIFETIME_IN_HOURS = 168
 
     @classmethod
     def encode_token(cls, user):

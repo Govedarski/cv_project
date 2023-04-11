@@ -9,7 +9,9 @@ from schemas.validators.password_validator import PasswordValidator
 class IdentifiersSchemaIn(Schema):
     email = fields.Email(required=True)
 
-    username = fields.Str(validate=validate.And(
+    username = fields.Str(
+        allow_none=True,
+        validate=validate.And(
         validate.Length(min=3, max=64),
         ValidateIsAlphaNumericAndSpace().validate
     ))

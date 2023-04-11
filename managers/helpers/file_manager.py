@@ -13,16 +13,20 @@ class FileManager:
         self.old_instance = None
         self.names_of_created_files = []
         self.paths_of_created_files = []
+        self.changed_file_field_names = []
 
     def edit(self, instance):
         self.old_instance = copy(instance)
 
     def create_file_links(self, data):
         for file_field_name in self.model.get_all_file_field_names():
-            file_binary = data.pop(file_field_name + FILE_SUFFIX_IN_SCHEMA) \
-                if data.get(file_field_name + FILE_SUFFIX_IN_SCHEMA) else None
-            file_extension = data.pop(file_field_name + EXTENSION_SUFFIX_IN_SCHEMA) \
-                if data.get(file_field_name + EXTENSION_SUFFIX_IN_SCHEMA) else None
+
+            file_binary = (file_field_name + FILE_SUFFIX_IN_SCHEMA) in data.keys() \
+                          and data.pop(file_field_name + FILE_SUFFIX_IN_SCHEMA)
+
+            file_extension = (file_field_name + EXTENSION_SUFFIX_IN_SCHEMA) in data.keys() \
+                and data.pop(file_field_name + EXTENSION_SUFFIX_IN_SCHEMA)
+
             if not has_file_data(file_binary, file_extension):
                 continue
 
@@ -32,13 +36,14 @@ class FileManager:
             self.paths_of_created_files.append(path)
             save_file(path, file)
 
+            self.changed_file_field_names.append(file_field_name)
             file_url = s3.upload_photo(path, file_name)
             data[file_field_name + FILE_SUFFIX_IN_DB] = file_url
 
     def delete_old_file_from_cloud(self):
         old_file_names = []
 
-        for file_field_name in self.model.get_all_file_field_names():
+        for file_field_name in self.changed_file_field_names:
             file_url = getattr(self.old_instance, file_field_name + FILE_SUFFIX_IN_DB)
             if not file_url:
                 continue
@@ -50,18 +55,7 @@ class FileManager:
     def delete_all_from_server(self):
         [os.remove(path) for path in self.paths_of_created_files]
 
-    def delete_from_cloud(self, file_names):
+    @staticmethod
+    def delete_from_cloud(file_names):
         [s3.delete_photo(file_name) for file_name in file_names if file_name]
 
-        #
-        #     if instance:
-        #         [s3.delete_photo(previous_picture) for previous_picture in previous_pictures if previous_picture]
-        #
-        #
-        # except Exception as ex:
-        #     [s3.delete_photo(photo_name) for photo_name in photo_names]
-        #     raise ex
-        # finally:
-        #     [os.remove(path) for path in paths]
-        #
-        # return instance

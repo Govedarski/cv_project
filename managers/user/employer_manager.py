@@ -4,7 +4,7 @@ from models.user.employer_model import EmployerModel
 
 
 class EmployerManager(PromoteManagerMixin, LoginManagerMixin, GetManagerMixin):
-    model = EmployerModel
+    MODEL = EmployerModel
 
     @classmethod
     def promote(cls, data, user_id):

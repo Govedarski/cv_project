@@ -1,8 +1,8 @@
 from marshmallow import Schema, fields
 from marshmallow_enum import EnumField
 
-from models.enums.contact_method_enum import ContactMethods
-from models.enums.user_roles_enum import JobSeekerRoles
+from models.enums.user.contact_method_enum import ContactMethods
+from models.enums.user.user_roles_enum import JobSeekerRoles
 
 
 class JobSeekerSchemaIn(Schema):

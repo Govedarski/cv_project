@@ -24,6 +24,15 @@ class RegisterResource(BaseResource):
         token, user = self.get_manager().register(data)
         return self.create_login_response(token, user), 201
 
+class RegisterJobSeeker(BaseResource):
+    MANAGER = UserManager
+    SCHEMA_IN = RegisterSchemaIn
+    SCHEMA_OUT = JobSeekerSchemaOut
+
+    def post(self):
+        data = self.get_data()
+        token, user = self.get_manager().register_job_seeker(data)
+        return self.create_login_response(token, user), 201
 
 class ChangePasswordResource(BaseResource):
     MANAGER = UserManager

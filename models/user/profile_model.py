@@ -10,7 +10,7 @@ from models.user.user_model import UserSubclass
 class ProfileFieldsEnum(Enum):
     first_name = "profile name"
     last_name = "last name"
-    data_of_birth = "data of birth"
+    date_of_birth = "date of birth"
     profile_picture_file_url = "profile picture"
     city = "city"
     address = "address"
@@ -58,7 +58,7 @@ class ProfileModel(UserSubclass):
     def public_address(self):
         return self.public_value_of("address")
 
-    phone_number = db.Column(db.String(9))
+    phone_number = db.Column(db.String(13))
 
     @property
     def public_phone_number(self):

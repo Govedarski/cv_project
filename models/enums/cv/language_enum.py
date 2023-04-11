@@ -1,0 +1,25 @@
+import enum
+
+
+class LanguageEnum(enum.Enum):
+    English = 'English'
+    Chinese = 'Chinese'
+    Spanish = 'Spanish'
+    Arabic = 'Arabic'
+    French = 'French'
+    Russian = 'Russian'
+    Portuguese = 'Portuguese'
+    German = 'German'
+    Japanese = 'Japanese'
+    Korean = 'Korean'
+    Turkish = 'Turkish'
+    Italian = 'Italian'
+    Polish = 'Polish'
+    Dutch = 'Dutch'
+    Swedish = 'Swedish'
+    Norwegian = 'Norwegian'
+    Danish = 'Danish'
+    Finnish = 'Finnish'
+    Hebrew = 'Hebrew'
+    Greek = 'Greek'
+    Bulgarian = 'Bulgarian'

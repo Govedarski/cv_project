@@ -8,14 +8,14 @@ from utils import helpers
 # from utils.decorators import handle_unique_constrain_violation
 
 class BaseManager:
-    model = None
+    MODEL = None
     UNIQUE_CONSTRAINT_MESSAGE = "Unique constraint: Object already exist!"
     PERMISSION_DENIED_MESSAGE = "Permission denied!"
     _instance = None
 
     @classmethod
     def get_model(cls) -> BaseModel:
-        return cls.model
+        return cls.MODEL
 
     def _get_instance(self, _id):
         if not self._instance:

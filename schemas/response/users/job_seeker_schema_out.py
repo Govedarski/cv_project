@@ -1,8 +1,8 @@
 from marshmallow import Schema, fields
 from marshmallow_enum import EnumField
 
-from models.enums.contact_method_enum import ContactMethods
-from models.enums.user_roles_enum import JobSeekerRoles
+from models.enums.user.contact_method_enum import ContactMethods
+from models.enums.user.user_roles_enum import JobSeekerRoles
 from schemas.response.users.profile_schema_out import ProfileSchemaOut
 from schemas.response.users.user_schema_out import UserSchemaOut
 
@@ -24,3 +24,5 @@ class JobSeekerSchemaOut(Schema):
     user = fields.Nested(UserSchemaOut)
 
     profile = fields.Nested(ProfileSchemaOut, attribute='user.profile')
+
+    cv_ids = fields.Function(lambda obj: [cv.id for cv in obj.cvs])

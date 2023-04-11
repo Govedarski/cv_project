@@ -23,3 +23,4 @@ class ExtendUserSchemaOut(UserSchemaOut):
     has_job_seeker_profile = fields.Boolean(attribute="job_seeker")
 
     has_employer_profile = fields.Boolean(attribute="employer")
+
