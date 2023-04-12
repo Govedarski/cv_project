@@ -5,11 +5,11 @@ from managers.cv.reference_manager import ReferenceManager
 from managers.cv.requirement_manager import RequirementManager
 from managers.cv.work_exp_manager import WorkExpManager
 from managers.helpers.decorators import handle_unique_constrain_violation
-from managers.helpers.manager_mixins import CreateManagerMixin, GetListManagerMixin
+from managers.helpers.manager_mixins import CreateManagerMixin, GetListManagerMixin, GetManagerMixin
 from models.cv.cv_model import CVModel
 
 
-class CVManager(CreateManagerMixin, GetListManagerMixin):
+class CVManager(GetManagerMixin, CreateManagerMixin, GetListManagerMixin):
     MODEL = CVModel
 
     @classmethod

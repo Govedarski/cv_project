@@ -63,8 +63,7 @@ class CVSchemaOut(Schema):
             attribute='certificates')
     )
 
-    requirements = fields.List(
-        fields.Nested(
+    requirements = fields.Nested(
             'RequirementSchemaOut',
             attribute='requirements')
-    )
+

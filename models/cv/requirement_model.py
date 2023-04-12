@@ -10,3 +10,4 @@ class RequirementModel(BaseModel):
     salary_min_range = db.Column(db.Integer)
     salary_max_range = db.Column(db.Integer)
     employment_type = db.Column(db.Enum(EmploymentTypeEnum))
+    cvs = db.relationship('CVModel', backref='requirements')

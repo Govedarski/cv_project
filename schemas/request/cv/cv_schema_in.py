@@ -58,4 +58,4 @@ class CVSchemaIn(Schema):
     education_ids = fields.List(fields.Integer(), allow_none=True)
     work_exp_ids = fields.List(fields.Integer(), allow_none=True)
     certificate_ids = fields.List(fields.Integer(), allow_none=True)
-    requirement_ids = fields.List(fields.Integer(), allow_none=True)
+    requirements_id = fields.Integer(allow_none=True)
