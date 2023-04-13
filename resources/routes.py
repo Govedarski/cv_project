@@ -5,7 +5,7 @@ from resources.cv.cv_resource import CVResource, CVDetailsResource
 from resources.cv.education_resource import CreateEducationResource, EducationResource
 from resources.cv.reference_resource import ReferenceResource, CreateReferenceResource
 from resources.cv.requirement_resource import CreateRequirementResource, RequirementResource
-from resources.cv.work_exp_resource import CreateWorkExpResource, WorkExpResource
+from resources.cv.work_exp_resource import WorkExpResource, WorkExpDetailsResource
 from resources.helpers.resource_mixins import BaseResource
 from resources.user.auth_resources import RegisterResource, LoginJobSeekerResource, LoginEmployerResource, \
     LoginUserResource, ChangePasswordResource, RegisterJobSeeker
@@ -60,8 +60,8 @@ class Routes(StaticCustomEnum):
     EDUCATION = Route(EducationResource, "/user/<int:user_id>/education/<int:education_id>")  # GET
 
 
-    CREATE_WORK_EXP = Route(CreateWorkExpResource, "/user/<int:user_id>/work_exp")  # POST
-    WORK_EXP = Route(WorkExpResource, "/user/<int:user_id>/work_exp/<int:work_exp_id>")  # GET
+    WORK_EXP = Route(WorkExpResource, "/user/<int:user_id>/work_exp")  # POST, GET
+    WORK_EXP_DETAILS = Route(WorkExpDetailsResource, "/user/<int:user_id>/work_exp/<int:work_exp_id>")  # GET
 
     CREATE_CERTIFICATE = Route(CreateCertificateResource, "/user/<int:user_id>/certificate")  # POST
     CERTIFICATE = Route(CertificateResource, "/user/<int:user_id>/certificate/<int:certificate_id>")  # GET
