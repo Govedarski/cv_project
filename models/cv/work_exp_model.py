@@ -12,7 +12,7 @@ class WorkExpModel(BaseModel):
     job_title = db.Column(db.String(64), nullable=False)
     field_of_work = db.Column(db.String(64), nullable=False)
     employment_type = db.Column(db.Enum(EmploymentTypeEnum), nullable=False)
-    description = db.Column(db.String(500), nullable=False)
+    description = db.Column(db.String(500))
     start_date = db.Column(db.String(10), nullable=False)
     end_date = db.Column(db.String(10), nullable=False)
 
