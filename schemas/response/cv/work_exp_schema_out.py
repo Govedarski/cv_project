@@ -10,7 +10,7 @@ class WorkExpSchemaOut(Schema):
     field_of_work = fields.String()
     description = fields.String()
     employment_type = fields.Enum(EmploymentTypeEnum,
-                                  by_name=True)
+                                  by_value=True)
     start_date = fields.String()
     end_date = fields.String()
 

@@ -95,6 +95,8 @@ class EditManagerMixin(BaseManager):
 
 class GetListManagerMixin(BaseManager):
     def get_list(self, filter_by, **kwargs):
+        filter_by = {**filter_by,
+                     "is_deleted": False}
         query = self.get_model().query
         for field, criteria in filter_by.items():
             if ".in" in field:
@@ -109,3 +111,10 @@ class GetListManagerMixin(BaseManager):
         except InvalidRequestError:
             # Invalid query string
             return []
+
+
+class DeleteManagerMixin(BaseManager):
+    def delete(self, _id):
+        # TODO delete files from cloud
+        instance = self._get_instance(_id)
+        instance.is_deleted = True

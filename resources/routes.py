@@ -61,7 +61,7 @@ class Routes(StaticCustomEnum):
 
 
     WORK_EXP = Route(WorkExpResource, "/user/<int:user_id>/work_exp")  # POST, GET
-    WORK_EXP_DETAILS = Route(WorkExpDetailsResource, "/user/<int:user_id>/work_exp/<int:work_exp_id>")  # GET
+    WORK_EXP_DETAILS = Route(WorkExpDetailsResource, "/user/<int:user_id>/work_exp/<int:work_exp_id>")  # GET, EDIT, DELETE
 
     CREATE_CERTIFICATE = Route(CreateCertificateResource, "/user/<int:user_id>/certificate")  # POST
     CERTIFICATE = Route(CertificateResource, "/user/<int:user_id>/certificate/<int:certificate_id>")  # GET

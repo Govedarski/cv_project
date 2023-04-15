@@ -12,7 +12,7 @@ def get_or_404(model, pk, message=None):
         message = PAGE_NOT_FOUND
 
     instance = model.query.filter_by(id=pk).first()
-    if not instance:
+    if not instance or instance.is_deleted:
         raise NotFound(message)
     return instance
 

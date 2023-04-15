@@ -14,6 +14,8 @@ class BaseModel(db.Model):
     created_on = db.Column(db.DateTime, server_default=func.now(), nullable=False)
     last_changed = db.Column(db.DateTime, onupdate=func.now())
 
+    is_deleted = db.Column(db.Boolean, default=False)
+
     @classmethod
     def get_all_file_field_names(cls):
         """Returns list of field names that has _file_url suffix and remove the suffix.

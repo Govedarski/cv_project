@@ -13,7 +13,7 @@ app = create_app()
 def return_response(response):
     db.session.commit()
     if current_app.debug and not current_app.testing:
-        sleep(random.randint(1, 3))
+        sleep(random.randint(0, 1))
     return response
 
 
