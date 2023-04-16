@@ -24,6 +24,7 @@ class EducationResource(CreateResourceMixin, GetListResourceMixin):
 
 class EducationDetailsResource(GetResourceMixin, EditResourceMixin, DeleteResourceMixin):
     MANAGER = EducationManager
+    SCHEMA_IN = EducationSchemaIn
     SCHEMA_OUT = EducationSchemaOut
 
     @auth.login_required

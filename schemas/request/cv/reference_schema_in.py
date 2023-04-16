@@ -3,10 +3,10 @@ from marshmallow import Schema, fields, validate
 
 
 class ReferenceSchemaIn(Schema):
-    name = fields.Str(validate=validate.Length(min=3, max=64))
+    name = fields.Str(required=True, validate=validate.Length(max=100))
 
-    position = fields.Str(validate=validate.Length(min=3, max=64))
+    position = fields.Str(required=True, validate=validate.Length(max=100))
 
-    company = fields.Str(validate=validate.Length(min=3, max=64))
+    company = fields.Str(required=True, validate=validate.Length(max=100))
 
-    contacts = fields.Str(validate=validate.Length(min=3, max=64))
+    contacts = fields.Str(required=True, validate=validate.Length(max=200))

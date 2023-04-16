@@ -3,7 +3,7 @@ from resources.cv.awards_and_achievements_resource import CreateAwardsAndAchieve
 from resources.cv.certificate_resource import CreateCertificateResource, CertificateResource
 from resources.cv.cv_resource import CVResource, CVDetailsResource
 from resources.cv.education_resource import EducationResource, EducationDetailsResource
-from resources.cv.reference_resource import ReferenceResource, CreateReferenceResource
+from resources.cv.reference_resource import ReferencesDetailsResource, ReferencesResource
 from resources.cv.requirement_resource import CreateRequirementResource, RequirementResource
 from resources.cv.work_exp_resource import WorkExpResource, WorkExpDetailsResource
 from resources.helpers.resource_mixins import BaseResource
@@ -50,8 +50,8 @@ class Routes(StaticCustomEnum):
     CV = Route(CVResource, "/user/<int:user_id>/cv")  # POST, GET
     CV_DETAILS = Route(CVDetailsResource, "/user/<int:user_id>/cv/<int:cv_id>")  # GET
 
-    CREATE_REFERENCE = Route(CreateReferenceResource, "/user/<int:user_id>/reference")  # POST
-    REFERENCE = Route(ReferenceResource, "/user/<int:user_id>/reference/<int:reference_id>")  # GET
+    REFERENCES = Route(ReferencesResource, "/user/<int:user_id>/references")  # POST
+    REFERENCES_DETAILS = Route(ReferencesDetailsResource, "/user/<int:user_id>/references/<int:reference_id>")  # GET
 
     CREATE_A_AND_A = Route(CreateAwardsAndAchievementsResource, "/user/<int:user_id>/awards_and_achievements")  # POST
     A_AND_A = Route(AwardsAndAchievementsResource, "/user/<int:user_id>/awards_and_achievements/<int:aaa_id>")  # GET
