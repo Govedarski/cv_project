@@ -73,14 +73,14 @@ class GetManagerMixin(BaseManager):
 
 class EditManagerMixin(BaseManager):
     @handle_unique_constrain_violation
-    def edit(self, data, _id, **kwargs):
+    def edit(self, data, _id, remove_images=False, **kwargs):
         instance = self._get_instance(_id)
 
         file_manager = FileManager(self.get_model())
         file_manager.edit(instance)
-
         try:
-            file_manager.create_file_links(data)
+            file_manager.create_file_links(data, remove_images)
+            print(data)
             self.get_model().query.filter_by(id=instance.id).update(data)
         except Exception as ex:
             file_manager.delete_from_cloud(file_manager.names_of_created_files)

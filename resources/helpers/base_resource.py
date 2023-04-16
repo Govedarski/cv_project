@@ -16,6 +16,7 @@ class BaseResource(Resource):
     SCHEMA_IN = None
     SCHEMA_OUT = None
     ALLOWED_ROLES = None
+    REMOVE_IMAGES_ON_EDIT = False
 
     def get_data(self, *args, **kwargs):
         """Validation is happened here so if you need to override this always call super

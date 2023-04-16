@@ -18,7 +18,7 @@ class FileManager:
     def edit(self, instance):
         self.old_instance = copy(instance)
 
-    def create_file_links(self, data):
+    def create_file_links(self, data, remove=False):
         for file_field_name in self.model.get_all_file_field_names():
 
             file_binary = (file_field_name + FILE_SUFFIX_IN_SCHEMA) in data.keys() \
@@ -28,6 +28,8 @@ class FileManager:
                 and data.pop(file_field_name + EXTENSION_SUFFIX_IN_SCHEMA)
 
             if not has_file_data(file_binary, file_extension):
+                if remove:
+                    data[file_field_name + FILE_SUFFIX_IN_DB] = None
                 continue
 
             file_name, file = create_file(file_binary, file_extension)

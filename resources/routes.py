@@ -1,6 +1,6 @@
 from resources.cv.awards_and_achievements_resource import CreateAwardsAndAchievementsResource, \
     AwardsAndAchievementsResource
-from resources.cv.certificate_resource import CreateCertificateResource, CertificateResource
+from resources.cv.certificate_resource import CertificateResource, CertificateDetailsResource
 from resources.cv.cv_resource import CVResource, CVDetailsResource
 from resources.cv.education_resource import EducationResource, EducationDetailsResource
 from resources.cv.reference_resource import ReferencesDetailsResource, ReferencesResource
@@ -63,8 +63,8 @@ class Routes(StaticCustomEnum):
     WORK_EXP = Route(WorkExpResource, "/user/<int:user_id>/work_exp")  # POST, GET
     WORK_EXP_DETAILS = Route(WorkExpDetailsResource, "/user/<int:user_id>/work_exp/<int:work_exp_id>")  # GET, EDIT, DELETE
 
-    CREATE_CERTIFICATE = Route(CreateCertificateResource, "/user/<int:user_id>/certificate")  # POST
-    CERTIFICATE = Route(CertificateResource, "/user/<int:user_id>/certificate/<int:certificate_id>")  # GET
+    CERTIFICATE = Route(CertificateResource, "/user/<int:user_id>/certificates")  # POST
+    CERTIFICATES_DETAILS = Route(CertificateDetailsResource, "/user/<int:user_id>/certificates/<int:certificate_id>")  # GET
     # PUT AND IMAGE
 
     REQUIREMENT = Route(RequirementsResource, "/user/<int:user_id>/requirements")  # POST

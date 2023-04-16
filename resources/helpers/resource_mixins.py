@@ -54,6 +54,7 @@ class EditResourceMixin(ABC, BaseResource):
         instances = self.get_manager()().edit(
             data,
             _id,
+            remove_images=self.REMOVE_IMAGES_ON_EDIT,
             **kwargs)
 
         return self.serialize_obj(instances, _id=_id, **kwargs), 200
