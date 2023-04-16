@@ -4,7 +4,7 @@ from resources.cv.certificate_resource import CreateCertificateResource, Certifi
 from resources.cv.cv_resource import CVResource, CVDetailsResource
 from resources.cv.education_resource import EducationResource, EducationDetailsResource
 from resources.cv.reference_resource import ReferencesDetailsResource, ReferencesResource
-from resources.cv.requirement_resource import CreateRequirementResource, RequirementResource
+from resources.cv.requirement_resource import RequirementsResource, RequirementsDetailsResource
 from resources.cv.work_exp_resource import WorkExpResource, WorkExpDetailsResource
 from resources.helpers.resource_mixins import BaseResource
 from resources.user.auth_resources import RegisterResource, LoginJobSeekerResource, LoginEmployerResource, \
@@ -67,8 +67,8 @@ class Routes(StaticCustomEnum):
     CERTIFICATE = Route(CertificateResource, "/user/<int:user_id>/certificate/<int:certificate_id>")  # GET
     # PUT AND IMAGE
 
-    CREATE_REQUIREMENT = Route(CreateRequirementResource, "/user/<int:user_id>/requirement")  # POST
-    REQUIREMENT = Route(RequirementResource, "/user/<int:user_id>/requirement/<int:requirement_id>")  # GET
+    REQUIREMENT = Route(RequirementsResource, "/user/<int:user_id>/requirements")  # POST
+    REQUIREMENTS_DETAILS = Route(RequirementsDetailsResource, "/user/<int:user_id>/requirements/<int:requirement_id>")  # GET
 
     # TALENT = Route(TalentResource, "/talent/<int:talent_id>")  # GET, PUT, DELETE for users
     # USERS = Route(UsersResource, "/user")  # GET, PUT, DELETE for list of users for Admin

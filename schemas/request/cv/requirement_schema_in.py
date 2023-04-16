@@ -8,7 +8,7 @@ class RequirementSchemaIn(Schema):
     salary_min_range = fields.Integer()
     salary_max_range = fields.Integer()
     employment_type = fields.Enum(EmploymentTypeEnum,
-                                  by_name=True)
+                                  by_value=True)
 
 
 
