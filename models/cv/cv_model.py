@@ -44,3 +44,5 @@ class CVModel(BaseModel):
                                    backref='cvs')
 
     requirements_id = db.Column(db.Integer, db.ForeignKey('requirement.id'))
+
+    public_status = db.Enum(LanguageEnum)

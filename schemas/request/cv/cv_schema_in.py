@@ -3,6 +3,7 @@ from marshmallow_enum import EnumField
 
 from models.enums.cv.education_level_enum import EducationLevelEnum
 from models.enums.cv.language_enum import LanguageEnum
+from models.enums.cv.public_status_enum import PublicStatusEnum
 from schemas.validators.common_validators import ValidateIsAlphaNumericAndSpace
 
 
@@ -59,3 +60,8 @@ class CVSchemaIn(Schema):
     work_exp_ids = fields.List(fields.Integer(), allow_none=True)
     certificate_ids = fields.List(fields.Integer(), allow_none=True)
     requirements_id = fields.Integer(allow_none=True)
+
+    public_status = EnumField(
+        PublicStatusEnum,
+        allow_none=True,
+        by_value=True)
