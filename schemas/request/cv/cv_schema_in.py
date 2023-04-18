@@ -18,13 +18,13 @@ class CVSchemaIn(Schema):
     hobbies = fields.Str(
         allow_none=True,
         validate=validate.And(
-            validate.Length(min=3, max=64),
+            validate.Length(max=500),
         ))
 
     summary = fields.Str(
         allow_none=True,
         validate=validate.And(
-            validate.Length(min=3, max=64),
+            validate.Length(max=500),
             ValidateIsAlphaNumericAndSpace().validate
         ))
 

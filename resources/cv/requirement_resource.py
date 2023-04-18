@@ -21,6 +21,8 @@ class RequirementsResource(CreateResourceMixin, GetListResourceMixin):
         self.get_valid_current_user(_id=user_id)
         return super().get(**kwargs)
 
+    def filter_by(self):
+        return {'owner_id': self.get_valid_current_user().id}
 
 class RequirementsDetailsResource(GetResourceMixin, EditResourceMixin, DeleteResourceMixin):
     MANAGER = RequirementManager

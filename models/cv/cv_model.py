@@ -17,7 +17,7 @@ class CVModel(BaseModel):
     id = db.Column(db.Integer, primary_key=True)
     owner_id = db.Column(db.Integer, db.ForeignKey('job_seeker.id'), nullable=False)
     name = db.Column(db.String(64))
-    hobbies = db.Column(db.String(100))
+    hobbies = db.Column(db.String(500))
     summary = db.Column(db.String(500))
     education_level = db.Column(db.Enum(EducationLevelEnum))
     standard_languages = db.Column(ARRAY(db.Enum(LanguageEnum)))
