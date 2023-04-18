@@ -17,14 +17,13 @@ class CVSchemaIn(Schema):
     hobbies = fields.Str(
         allow_none=True,
         validate=validate.And(
-            validate.Length(max=500),
+            validate.Length(max=1000),
         ))
 
     summary = fields.Str(
         allow_none=True,
         validate=validate.And(
-            validate.Length(max=500),
-            ValidateIsAlphaNumericAndSpace().validate
+            validate.Length(max=1000),
         ))
 
     education_level = EnumField(
