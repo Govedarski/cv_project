@@ -16,13 +16,14 @@ class CVManager(GetManagerMixin, CreateManagerMixin, GetListManagerMixin, EditMa
     @classmethod
     @handle_unique_constrain_violation
     def create(cls, data, user):
-        reference_ids = data.get("reference_ids") and data.pop("reference_ids") or []
-        aaa_ids = data.get("aaa_ids") and data.pop("aaa_ids") or []
-        education_ids = data.get("education_ids") and data.pop("education_ids") or []
-        work_exp_ids = data.get("work_exp_ids") and data.pop("work_exp_ids") or []
-        certificate_ids = data.get("certificate_ids") and data.pop("certificate_ids") or []
-        requirement_ids = data.get("requirement_ids") and data.pop("requirement_ids") or []
+        reference_ids = data.get("reference_ids", None) is not None and data.pop("reference_ids") or []
+        aaa_ids = data.get("aaa_ids", None) is not None and data.pop("aaa_ids") or []
+        education_ids = data.get("education_ids", None) is not None and data.pop("education_ids") or []
+        work_exp_ids = data.get("work_exp_ids", None) is not None and data.pop("work_exp_ids") or []
+        certificate_ids = data.get("certificate_ids", None) is not None and data.pop("certificate_ids") or []
+        requirement_ids = data.get("requirement_ids", None) is not None and data.pop("requirement_ids") or []
         instance = super().create(data, user)
+
         def add_to_cv(cv, manager, ids):
             for _id in ids:
                 instance = manager().get(_id=_id)
@@ -41,16 +42,18 @@ class CVManager(GetManagerMixin, CreateManagerMixin, GetListManagerMixin, EditMa
 
         return instance
 
+
+
     def edit(self, data, _id, remove_images=False, **kwargs):
         # TODO: check if resource belongs to user
         instance = self._get_instance(_id)
 
-        reference_ids = data.get("reference_ids") and data.pop("reference_ids") or []
-        aaa_ids = data.get("aaa_ids") and data.pop("aaa_ids") or []
-        education_ids = data.get("education_ids") and data.pop("education_ids") or []
-        work_exp_ids = data.get("work_exp_ids") and data.pop("work_exp_ids") or []
-        certificate_ids = data.get("certificate_ids") and data.pop("certificate_ids") or []
-        requirement_ids = data.get("requirement_ids") and data.pop("requirement_ids") or []
+        reference_ids = data.get("reference_ids", None) is not None and data.pop("reference_ids") or []
+        aaa_ids = data.get("aaa_ids", None) is not None and data.pop("aaa_ids") or []
+        education_ids = data.get("education_ids", None) is not None and data.pop("education_ids") or []
+        work_exp_ids = data.get("work_exp_ids", None) is not None and data.pop("work_exp_ids") or []
+        certificate_ids = data.get("certificate_ids", None) is not None and data.pop("certificate_ids") or []
+        requirement_ids = data.get("requirement_ids", None) is not None and data.pop("requirement_ids") or []
 
         self.get_model().query.filter_by(id=instance.id).update(data)
 

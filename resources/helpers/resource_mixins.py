@@ -66,6 +66,7 @@ class GetListResourceMixin(ABC, BaseResource):
     @abstractmethod
     def get(self, **kwargs):
         obj_list = self.get_manager()().get_list(self.filter_by(), **kwargs)
+
         return [self.get_schema_out(instance=instance)().dump(instance) for instance in obj_list if instance], 200
 
     def filter_by(self):

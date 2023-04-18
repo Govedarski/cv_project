@@ -8,6 +8,7 @@ from models.association_tables.cv.cv_reference_association import cv_reference_a
 from models.association_tables.cv.cv_work_exp_association import cv_work_exps_association
 from models.enums.cv.education_level_enum import EducationLevelEnum
 from models.enums.cv.language_enum import LanguageEnum
+from models.enums.cv.public_status_enum import PublicStatusEnum
 from models.helpers.base_model import BaseModel
 
 
@@ -45,4 +46,4 @@ class CVModel(BaseModel):
 
     requirements_id = db.Column(db.Integer, db.ForeignKey('requirement.id'))
 
-    public_status = db.Enum(LanguageEnum)
+    public_status = db.Column(db.Enum(PublicStatusEnum))

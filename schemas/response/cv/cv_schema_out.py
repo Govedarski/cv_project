@@ -58,7 +58,6 @@ class CVSchemaOut(Schema):
             attribute='work_exps')
     )
 
-
     certificates = fields.List(
         fields.Nested(
             'CertificateSchemaOut',
@@ -66,13 +65,11 @@ class CVSchemaOut(Schema):
     )
 
     requirements = fields.Nested(
-            'RequirementSchemaOut',
-            attribute='requirements')
+        'RequirementSchemaOut',
+        attribute='requirements')
 
-    public_status = EnumField(
-        PublicStatusEnum,
-        allow_none=True,
-        by_value=True)
+    public_status = fields.Enum(PublicStatusEnum,
+                                by_value=True)
 
     @post_dump
     def calculate_work_exp_ids(self, data, **kwargs):
