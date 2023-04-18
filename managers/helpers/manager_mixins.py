@@ -80,7 +80,6 @@ class EditManagerMixin(BaseManager):
         file_manager.edit(instance)
         try:
             file_manager.create_file_links(data, remove_images)
-            print(data)
             self.get_model().query.filter_by(id=instance.id).update(data)
         except Exception as ex:
             file_manager.delete_from_cloud(file_manager.names_of_created_files)

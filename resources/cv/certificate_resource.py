@@ -1,5 +1,6 @@
 from managers.auth_manager import auth
 from managers.cv.certificate_manager import CertificateManager
+from resources.helpers.base_resource import BaseResource
 from resources.helpers.resource_mixins import CreateResourceMixin, GetResourceMixin, GetListResourceMixin, \
     DeleteResourceMixin, EditResourceMixin
 from schemas.request.cv.certificate_schema_in import CertificateSchemaIn
@@ -44,3 +45,13 @@ class CertificateDetailsResource(GetResourceMixin, EditResourceMixin, DeleteReso
     def delete(self, user_id, certificate_id, **kwargs):
         self.get_valid_current_user(_id=user_id)
         return super().delete(_id=certificate_id, **kwargs)
+
+class CertificateImageResource(BaseResource):
+    MANAGER = CertificateManager
+    SCHEMA_OUT = CertificateSchemaOut
+
+    @auth.login_required
+    def delete(self, user_id, certificate_id, **kwargs):
+        self.get_valid_current_user(_id=user_id)
+        self.get_manager()().delete_image(_id=certificate_id)
+        return {}, 200

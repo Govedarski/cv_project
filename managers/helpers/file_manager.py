@@ -28,8 +28,6 @@ class FileManager:
                 and data.pop(file_field_name + EXTENSION_SUFFIX_IN_SCHEMA)
 
             if not has_file_data(file_binary, file_extension):
-                if remove:
-                    data[file_field_name + FILE_SUFFIX_IN_DB] = None
                 continue
 
             file_name, file = create_file(file_binary, file_extension)
