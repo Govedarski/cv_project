@@ -1,9 +1,11 @@
 from marshmallow import Schema, fields, post_dump
 from marshmallow_enum import EnumField
 
+from managers.user.profile_manager import ProfileManager
 from models.enums.cv.education_level_enum import EducationLevelEnum
 from models.enums.cv.language_enum import LanguageEnum
 from models.enums.cv.public_status_enum import PublicStatusEnum
+from schemas.response.users.profile_schema_out import ProfileSchemaOut
 
 
 class CVSchemaOut(Schema):
@@ -68,6 +70,7 @@ class CVSchemaOut(Schema):
         'RequirementSchemaOut',
         attribute='requirements')
 
+
     public_status = fields.Enum(PublicStatusEnum,
                                 by_value=True)
 
@@ -89,6 +92,8 @@ class CVSchemaOut(Schema):
         reference_ids = [r['id'] for r in references]
         data['reference_ids'] = reference_ids
 
+        profile = ProfileManager().get(data.get('owner_id'))
+        data['profile'] = ProfileSchemaOut(many=isinstance(profile, list)).dump(profile)
 
         requirements = data.get('requirements')
         if requirements:
