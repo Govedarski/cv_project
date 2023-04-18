@@ -1,6 +1,7 @@
 from marshmallow import Schema, fields, post_dump
 from marshmallow_enum import EnumField
 
+from managers.user.job_seeker_manager import JobSeekerManager
 from managers.user.profile_manager import ProfileManager
 from models.enums.cv.education_level_enum import EducationLevelEnum
 from models.enums.cv.language_enum import LanguageEnum
@@ -94,6 +95,8 @@ class CVSchemaOut(Schema):
 
         profile = ProfileManager().get(data.get('owner_id'))
         data['profile'] = ProfileSchemaOut(many=isinstance(profile, list)).dump(profile)
+        owner = JobSeekerManager().get(data.get('owner_id'))
+        data['email'] = owner.user.email
 
         requirements = data.get('requirements')
         if requirements:

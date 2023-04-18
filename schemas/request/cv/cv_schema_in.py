@@ -19,7 +19,6 @@ class CVSchemaIn(Schema):
         allow_none=True,
         validate=validate.And(
             validate.Length(min=3, max=64),
-            ValidateIsAlphaNumericAndSpace().validate
         ))
 
     summary = fields.Str(

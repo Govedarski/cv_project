@@ -32,7 +32,7 @@ class CVDetailsResource(GetResourceMixin, EditResourceMixin, DeleteResourceMixin
     SCHEMA_IN = CVSchemaIn
     SCHEMA_OUT = CVSchemaOut
 
-    @auth.login_required
+    @auth.login_optional
     def get(self, user_id, cv_id, **kwargs):
         self.get_valid_current_user(_id=user_id)
         return super().get(_id=cv_id, **kwargs)
@@ -47,9 +47,13 @@ class CVDetailsResource(GetResourceMixin, EditResourceMixin, DeleteResourceMixin
         self.get_valid_current_user(_id=user_id)
         return super().delete(_id=cv_id, **kwargs)
 
-class CVAllResource(GetListResourceMixin):
+class CVAllResource( GetListResourceMixin):
     MANAGER = CVManager
     SCHEMA_OUT = CVSchemaOut
+
+
+
+
 
     @auth.login_optional
     def get(self, **kwargs):
@@ -63,3 +67,21 @@ class CVAllResource(GetListResourceMixin):
         if not auth.current_user():
             return {"public_status":"PUBLIC"}
         return {}
+
+
+
+class PublicCVResource(GetResourceMixin):
+    MANAGER = CVManager
+    SCHEMA_OUT = CVSchemaOut
+
+    @auth.login_optional
+    def get(self, _id, **kwargs):
+        self.get_valid_current_user(_id=_id)
+        instances = self.get_manager()().get(_id, **kwargs)
+        if instances.public_status == PublicStatusEnum.PUBLIC:
+            return self.serialize_obj(instances, _id=_id, **kwargs), 200
+
+        if instances.public_status == PublicStatusEnum.PROTECTED and auth.current_user():
+            return self.serialize_obj(instances, _id=_id, **kwargs), 200
+
+        return {}, 200
